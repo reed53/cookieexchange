@@ -1,27 +1,41 @@
 import logging
+from typing import Any
 
+import boto3
+from boto3.dynamodb.conditions import Attr
 
 LOGGER = logging.getLogger()
 LOGGER.setLevel(logging.INFO)
 
+VOTES_TABLE = None
 
-def lambda_handler(event, context) -> str:
+DYNAMO_CLIENT = None
+
+
+def get_votes_table() -> Any:
     """
-    Lambda handler
-    :param event: Not used
-    :param context: Not used
-    :return:
-    :raises
+    Gets the votes table
+    :return: the votes table
     """
-    logging.info('here')
-    return 'OK'
+    global VOTES_TABLE, DYNAMO_CLIENT
+    if VOTES_TABLE is None:
+        DYNAMO_CLIENT = boto3.resource('dynamodb')
+        VOTES_TABLE = DYNAMO_CLIENT.Table('cookieexchange')
+
+    return VOTES_TABLE
 
 
-def main() -> None:
-    """
-    """
-    pass
-
-
-if __name__ == '__main__':
-    main()
+def lambda_handler(event, context) -> dict:
+    if 'voter' not in event or 'votes' not in event:
+        return {'error': 'Invalid Request'}
+    voter = event['voter'].lower()
+    votes = [vote.lower() for vote in event['votes']]
+    if voter in votes:
+        return {'error': 'You can\'t vote for yourself!'}
+    table = get_votes_table()
+    try:
+        table.put_item(Item={'voter': voter, 'votes': votes},
+                       ConditionExpression=Attr('voter').not_exists())
+    except DYNAMO_CLIENT.meta.client.exceptions.ConditionalCheckFailedException:
+        return {'error': 'You can\'t vote twice!'}
+    return {}
