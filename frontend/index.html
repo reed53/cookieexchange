@@ -2,18 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="cookie.png">
+  <link rel="icon" type="image/png" href="favicon.ico">
   <link rel="stylesheet" href="css-loader.css">
   <title>PhAST Third Annual Cookie Exchange</title>
 </head>
 <body onload="populatePage()">
 <h1>Welcome to the PhAST Third Annual Cookie Exchange Competition!</h1>
+<img src="spinningcookie.gif">
+<img src="spinningcookie.gif">
+<img src="spinningcookie.gif">
 <p>Identify yourself:</p>
 <div id="voterSelect"></div>
-
 <p>Select three votes:</p>
 <div id="voteSelect"></div>
 <button onclick="submitData()">Vote</button>
+<br>
+<img src="spinningcookie.gif">
+<img src="spinningcookie.gif">
+<img src="spinningcookie.gif">
 <script src="script.js"></script>
 <script type="text/template" id="voterTemplate">
 <input type="radio" id="voter{voter}" name="voter" value="{voter}"><label for="voter{voter}">{voter}</label>
