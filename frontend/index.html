@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="cookie.png">
+  <link rel="stylesheet" href="css-loader.css">
+  <title>PhAST Third Annual Cookie Exchange</title>
+</head>
+<body onload="populatePage()">
+<h1>Welcome to the PhAST Third Annual Cookie Exchange Competition!</h1>
+<p>Identify yourself:</p>
+<div id="voterSelect"></div>
+
+<p>Select three votes:</p>
+<div id="voteSelect"></div>
+<button onclick="submitData()">Vote</button>
+<script src="script.js"></script>
+<script type="text/template" id="voterTemplate">
+<input type="radio" id="voter{voter}" name="voter" value="{voter}"><label for="voter{voter}">{voter}</label>
+</script>
+<script type="text/template" id="voteTemplate">
+<input type="checkbox" id="vote{voter}" name="vote" value="{voter}"><label for="vote{voter}">{voter}</label>
+</script>
+
+<div class="loader loader-default" id="loader"></div>
+</body>
+</html>

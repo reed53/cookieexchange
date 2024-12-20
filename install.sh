@@ -14,3 +14,5 @@ cd ..
 aws --profile personal lambda update-function-code --function-name cookieexchangelambda --zip-file fileb://cookieExchange.zip >/dev/null || exit 1
 rm -r target
 rm cookieExchange.zip
+
+aws --profile personal s3 cp --recursive frontend/ s3://cookie-webapp/

@@ -1,0 +1,19 @@
+.loader{color:#fff;position:fixed;box-sizing:border-box;left:-9999px;top:-9999px;width:0;height:0;overflow:hidden;z-index:999999}
+.loader:after,.loader:before{box-sizing:border-box;display:none}
+.loader.is-active{background-color:rgba(0,0,0,.85);width:10%;height:10%;left:45%;top:45%}
+.loader.is-active:after,.loader.is-active:before{display:block}
+@keyframes rotation{0%{transform:rotate(0)}to{transform:rotate(359deg)}}
+@keyframes blink{0%{opacity:.5}to{opacity:1}}
+.loader[data-text]:before{position:fixed;left:0;top:50%;color:currentColor;font-family:Helvetica,Arial,sans-serif;text-align:center;width:100%;font-size:14px}
+.loader[data-text=""]:before{content:"Loading"}
+.loader[data-text]:not([data-text=""]):before{content:attr(data-text)}
+.loader[data-text][data-blink]:before{animation:blink 1s linear infinite alternate}
+.loader-default[data-text]:before{top:calc(50% - 63px)}
+.loader-default:after{content:"";position:fixed;width:48px;height:48px;border:8px solid #fff;border-left-color:transparent;border-radius:50%;top:calc(50% - 24px);left:calc(50% - 24px);animation:rotation 1s linear infinite}
+.loader-default[data-half]:after{border-right-color:transparent}
+.loader-default[data-inverse]:after{animation-direction:reverse}
+.loader-clock:before{width:120px;height:120px;border-radius:50%;margin:-60px 0 0 -60px;background:linear-gradient(180deg,transparent 50%,#f5f5f5 0),linear-gradient(90deg,transparent 55px,#2ecc71 0,#2ecc71 65px,transparent 0),linear-gradient(180deg,#f5f5f5 50%,#f5f5f5 0);box-shadow:inset 0 0 0 10px #f5f5f5,0 0 0 5px #555,0 0 0 10px #7b7b7b;animation:rotation infinite 2s linear}
+.loader-clock:after,.loader-clock:before{content:"";position:fixed;left:50%;top:50%;overflow:hidden}
+.loader-clock:after{width:60px;height:40px;margin:-20px 0 0 -15px;border-radius:20px 0 0 20px;background:radial-gradient(circle at 14px 20px,#25a25a 10px,transparent 0),radial-gradient(circle at 14px 20px,#1b7943 14px,transparent 0),linear-gradient(180deg,transparent 15px,#2ecc71 0,#2ecc71 25px,transparent 0);animation:rotation infinite 24s linear;transform-origin:15px center}
+.loader-pokeball:before{content:"";position:absolute;width:100px;height:100px;top:50%;left:50%;margin:-50px 0 0 -50px;background:linear-gradient(180deg,red 42%,#000 0,#000 58%,#fff 0);background-repeat:no-repeat;background-color:#fff;border-radius:50%;z-index:1;animation:movePokeball 1s linear infinite both}
+.loader-pokeball:after{content:"";position:absolute;width:24px;height:24px;top:50%;left:50%;margin:-12px 0 0 -12px;background-color:#fff;border-radius:50%;z-index:2;animation:movePokeball 1s linear infinite both,flashPokeball .5s infinite alternate;border:2px solid #000;box-shadow:0 0 0 5px #fff,0 0 0 10px #000}@keyframes movePokeball{0%{transform:translateX(0) rotate(0)}15%{transform:translatex(-10px) rotate(-5deg)}30%{transform:translateX(10px) rotate(5deg)}45%{transform:translatex(0) rotate(0)}}@keyframes flashPokeball{0%{background-color:#fff}to{background-color:#fd0}}

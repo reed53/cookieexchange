@@ -32,6 +32,12 @@ def lambda_handler(event, context) -> dict:
     votes = [vote.lower() for vote in event['votes']]
     if voter in votes:
         return {'error': 'You can\'t vote for yourself!'}
+
+    if len(votes) != 3:
+        return {'error': 'You must vote for 3 people!'}
+
+    if len(set(votes)) != 3:
+        return {'error': 'You cannot vote for the same person twice!'}
     table = get_votes_table()
     try:
         table.put_item(Item={'voter': voter, 'votes': votes},
