@@ -1,5 +1,7 @@
-let voters = ['Ali', 'Andrew', 'Ariana', 'Bill', 'Bobby', 'Jack', 'Jaren', 'Jordan', 'Kimy', 'Kwangmin',
-    'Matt', 'Rahhul', 'Reed', 'Russel', 'Steven'];
+let voters = ['Ali', 'Andrew', 'Ariana', 'Bill', 'Bobby', 'Dhruv', 'Jack', 'Jordan', 'Kimy', 'Kwangmin',
+    'Matt', 'Reed', 'Russel', 'Sai', 'Steven', 'Teddy'];
+
+COMPETITION = 'pie25';
 
 // common regex to replace in
 const variableMatcherPattern = new RegExp('{([a-zA-Z0-9.]+)}', 'g');
@@ -24,7 +26,7 @@ function submitData() {
   }
 
   let votes = [...document.querySelectorAll('input[name="vote"]:checked')].map(node => node.value);
-  callLambda({votes, voter}, handleLambdaResponse);
+  callLambda({COMPETITION, votes, voter}, handleLambdaResponse);
 }
 
 function handleLambdaResponse(response) {

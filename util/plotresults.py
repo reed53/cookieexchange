@@ -16,7 +16,7 @@ def main():
     plt.bar(list(vote_counts.keys()), list(vote_counts.values()))
     plt.title('Results')
     plt.xlabel('Competitor')
-    plt.ylabel('Vote Count')
+    plt.ylabel('Vote Count') # Need to add a competition parameter
 
     plt.show()
 

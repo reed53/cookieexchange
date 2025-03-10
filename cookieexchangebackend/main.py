@@ -30,6 +30,7 @@ def lambda_handler(event, context) -> dict:
         return {'error': 'Invalid Request'}
     voter = event['voter'].lower()
     votes = [vote.lower() for vote in event['votes']]
+    competition = event['competition']
     if voter in votes:
         return {'error': 'You can\'t vote for yourself!'}
 
@@ -40,7 +41,7 @@ def lambda_handler(event, context) -> dict:
         return {'error': 'You cannot vote for the same person twice!'}
     table = get_votes_table()
     try:
-        table.put_item(Item={'voter': voter, 'votes': votes},
+        table.put_item(Item={'voter': voter, 'votes': votes, 'competition': competition},
                        ConditionExpression=Attr('voter').not_exists())
     except DYNAMO_CLIENT.meta.client.exceptions.ConditionalCheckFailedException:
         return {'error': 'You can\'t vote twice!'}
