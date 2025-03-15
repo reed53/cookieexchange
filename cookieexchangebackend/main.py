@@ -11,6 +11,9 @@ VOTES_TABLE = None
 
 DYNAMO_CLIENT = None
 
+# The current competition. Set in the backend so tech-savvy users can't modify previous results
+COMPETITION = 'pie:2025'
+
 
 def get_votes_table() -> Any:
     """
@@ -20,7 +23,7 @@ def get_votes_table() -> Any:
     global VOTES_TABLE, DYNAMO_CLIENT
     if VOTES_TABLE is None:
         DYNAMO_CLIENT = boto3.resource('dynamodb')
-        VOTES_TABLE = DYNAMO_CLIENT.Table('cookieexchange')
+        VOTES_TABLE = DYNAMO_CLIENT.Table('phastcompetition')
 
     return VOTES_TABLE
 
@@ -30,7 +33,6 @@ def lambda_handler(event, context) -> dict:
         return {'error': 'Invalid Request'}
     voter = event['voter'].lower()
     votes = [vote.lower() for vote in event['votes']]
-    competition = event['competition']
     if voter in votes:
         return {'error': 'You can\'t vote for yourself!'}
 
@@ -41,8 +43,8 @@ def lambda_handler(event, context) -> dict:
         return {'error': 'You cannot vote for the same person twice!'}
     table = get_votes_table()
     try:
-        table.put_item(Item={'voter': voter, 'votes': votes, 'competition': competition},
-                       ConditionExpression=Attr('voter').not_exists())
+        table.put_item(Item={'voter': voter, 'votes': votes, 'competitionId': COMPETITION},
+                       ConditionExpression=Attr('competitionId').not_exists() & Attr('voter').not_exists())
     except DYNAMO_CLIENT.meta.client.exceptions.ConditionalCheckFailedException:
         return {'error': 'You can\'t vote twice!'}
     return {}

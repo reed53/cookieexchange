@@ -1,12 +1,14 @@
+from argparse import ArgumentParser
+
 import boto3
 import matplotlib.pyplot as plt
-from matplotlib.ticker import MaxNLocator
+from boto3.dynamodb.conditions import Key
 
 
-def main():
+def main(competition_id: str):
     db_client = boto3.resource('dynamodb')
-    votes_table = db_client.Table('cookieexchange')
-    results = votes_table.scan()['Items']
+    votes_table = db_client.Table('phastcompetition')
+    results = votes_table.query(KeyConditionExpression=Key('competitionId').eq(competition_id))['Items']
     vote_counts = {}
     for res in results:
         for vote in res['votes']:
@@ -16,10 +18,13 @@ def main():
     plt.bar(list(vote_counts.keys()), list(vote_counts.values()))
     plt.title('Results')
     plt.xlabel('Competitor')
-    plt.ylabel('Vote Count') # Need to add a competition parameter
+    plt.ylabel('Vote Count')
 
     plt.show()
 
 
 if __name__ == '__main__':
-    main()
+    parser = ArgumentParser()
+    parser.add_argument('competition_id', type=str, help='The ID of the competition to plot')
+    args = parser.parse_args()
+    main(args.competition_id)
